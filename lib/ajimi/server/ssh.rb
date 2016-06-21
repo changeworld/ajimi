@@ -7,6 +7,7 @@ module Ajimi
         @host = options[:host]
         @user = options[:user]
         @key = options[:key]
+        @local_port = options[:local_port]
       end
 
       def net_ssh
@@ -23,6 +24,7 @@ module Ajimi
         stdout = ""
         stderr = ""
         net_ssh.start(@host, @user, ssh_options) do |session|
+          session.forward.local(@local_port, @host, 22) if @local_port.is_a?(Integer)
           session.exec!(cmd) do |channel, stream, data|
             stdout << data if stream == :stdout
             stderr << data if stream == :stderr
