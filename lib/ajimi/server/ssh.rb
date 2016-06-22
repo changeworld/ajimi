@@ -7,7 +7,7 @@ module Ajimi
         @host = options[:host]
         @user = options[:user]
         @key = options[:key]
-        @local_port = options[:local_port]
+        @port = options[:port]
       end
 
       def net_ssh
@@ -17,7 +17,8 @@ module Ajimi
       def command_exec(cmd)
         ssh_options_default = {}
         ssh_options_override = {
-          keys: @key
+          keys: @key,
+          port: @port
         }
         ssh_options = ssh_options_default.merge(ssh_options_override)
 
